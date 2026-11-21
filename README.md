@@ -1,4 +1,8 @@
 # Proyecto de hackatón · Universidad Técnica Federico Santa María
+Grupo: Programáticos
+Renato Fernández
+Soffia Romero
+Axius Altamirano
 
 Aplicación de campus para que personas con discapacidad soliciten entregas de alimentos y otros artículos, elijan un repartidor y coordinen la entrega en privado.
 
