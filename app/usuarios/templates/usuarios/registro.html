@@ -1,0 +1,32 @@
+{% extends "usuarios/base.html" %}
+{% block titulo %}Crear cuenta{% endblock %}
+
+{% block contenido %}
+<h1>Crear cuenta</h1>
+<p class="intro">Elige cómo participarás en las entregas del campus.</p>
+<form method="post">
+  {% csrf_token %}
+  {% if form.errors %}
+    <p class="alerta" role="alert">Revisa los campos indicados para continuar.</p>
+  {% endif %}
+  {{ form.non_field_errors }}
+  <fieldset>
+    <legend>Datos de cuenta</legend>
+    <div class="campos">
+      <div>{{ form.username.as_field_group }}</div>
+      <div>{{ form.tipo_usuario.as_field_group }}</div>
+      <div>{{ form.rut_id.as_field_group }}</div>
+      <div>{{ form.celular.as_field_group }}</div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Contraseña</legend>
+    <div class="campos">
+      <div>{{ form.password1.as_field_group }}</div>
+      <div>{{ form.password2.as_field_group }}</div>
+    </div>
+  </fieldset>
+  <button type="submit">Crear mi cuenta</button>
+</form>
+<p class="pie">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></p>
+{% endblock %}

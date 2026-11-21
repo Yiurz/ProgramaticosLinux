@@ -1,0 +1,56 @@
+:root {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  color: #172c43;
+  background: #eef3f6;
+  line-height: 1.5;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { padding: 1rem max(1rem, calc((100% - 46rem) / 2)); background: #163653; color: white; }
+header span { font-weight: 600; }
+main {
+  width: min(calc(100% - 2rem), 46rem);
+  margin: 2rem auto;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  background: white;
+  border-radius: 1rem;
+  border-top: .35rem solid #dfb143;
+}
+h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; }
+.intro { margin: .65rem 0 2rem; }
+fieldset { border: 0; border-top: 1px solid #cbd6dd; margin: 0 0 1.7rem; padding: 1rem 0 0; min-width: 0; }
+legend { padding: 0 .75rem 0 0; font-size: 1.2rem; font-weight: 700; }
+.campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.campos > div { display: flex; flex-direction: column; }
+label { font-weight: 600; }
+input, select, button {
+  font: inherit;
+  padding: .7rem;
+  border-radius: .45rem;
+  min-height: 2.85rem;
+}
+input, select { order: 1; width: 100%; color: inherit; background: white; border: 1px solid #728595; margin-top: .25rem; }
+.helptext, .errorlist { order: 2; font-size: .9rem; margin-top: .35rem; }
+.helptext { color: #465968; }
+.helptext ul, .errorlist { margin-bottom: 0; padding-left: 1.25rem; }
+.alerta, .errorlist { color: #9c242d; }
+[aria-invalid="true"] { border-color: #9c242d; }
+button { width: 100%; border: 0; background: #17476a; color: white; font-weight: 700; cursor: pointer; }
+button:hover { background: #103550; }
+a { color: #17476a; text-underline-offset: .17em; }
+:focus-visible { outline: 3px solid #007daf; outline-offset: 3px; }
+.pie { margin: 1rem 0 0; text-align: center; }
+@media (max-width: 36rem) {
+  .campos { grid-template-columns: 1fr; }
+  main { margin: 1rem auto; }
+}
+
+.compacta main { max-width: 32rem; overflow-wrap: anywhere; }
+.acceso .campos { grid-template-columns: 1fr; margin: 1.75rem 0; }
+.aviso { background: #fff2f1; border-left: .25rem solid #9c242d; padding: .75rem 1rem; margin-top: 1rem; }
+.aviso .errorlist { margin: 0; padding: 0; list-style: none; }
+.resumen { margin: 1.75rem 0; padding: 1rem 0; border-block: 1px solid #cbd6dd; }
+.resumen dt { color: #465968; }
+.resumen dd { margin: .15rem 0 0; font-size: 1.2rem; font-weight: 600; }
+.secundario { color: #17476a; background: white; border: 1px solid currentColor; }
+.secundario:hover { background: #eef3f6; }

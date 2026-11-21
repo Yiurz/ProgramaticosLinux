@@ -26,10 +26,9 @@ class Usuario(AbstractUser):
     null=True,
     blank=True
   )
+  penalizado = models.BooleanField(default=False)
 
   # Campos ignorados, no se usarán al final
-  first_name = models.CharField(null=True, blank=True)
-  last_name = models.CharField(null=True, blank=True)
   email = models.EmailField(null=True, blank=True)
 
   class Tipos(models.TextChoices):
@@ -37,7 +36,7 @@ class Usuario(AbstractUser):
     REPARTIDOR = "REPARTIDOR", "repartidor"
   tipo_usuario = models.CharField(choices=Tipos, default=Tipos.REPARTIDOR)
 
-  REQUIRED_FIELDS = ["rol_usm", "celular"]
+  REQUIRED_FIELDS = ["rut_id", "celular"]
 
   def __str__(self):
     return self.username
