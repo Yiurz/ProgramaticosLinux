@@ -5,12 +5,11 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Usuario(AbstractUser):
-  rol = models.CharField(
+  rut_id = models.CharField(
     max_length=11,
     unique=True
   )
   celular = models.CharField(max_length=20)
-  es_discapacitado = models.BooleanField(default=False)
   es_verificado = models.BooleanField(default=False)
   tiene_pub_activa = models.BooleanField(default=False)
   rating = models.DecimalField(
@@ -28,7 +27,17 @@ class Usuario(AbstractUser):
     blank=True
   )
 
-  REQUIRED_FIELDS = ["rol", "Celular"]
+  # Campos ignorados, no se usarán al final
+  first_name = models.CharField(null=True, blank=True)
+  last_name = models.CharField(null=True, blank=True)
+  email = models.EmailField(null=True, blank=True)
+
+  class Tipos(models.TextChoices):
+    DISCAPACITADO = "DISCAPACITADO", "discapacitado"
+    REPARTIDOR = "REPARTIDOR", "repartidor"
+  tipo_usuario = models.CharField(choices=Tipos, default=Tipos.REPARTIDOR)
+
+  REQUIRED_FIELDS = ["rol_usm", "celular"]
 
   def __str__(self):
     return self.username
