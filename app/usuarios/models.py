@@ -10,6 +10,7 @@ class Usuario(AbstractUser):
     unique=True
   )
   celular = models.CharField(max_length=20)
+  foto_perfil = models.ImageField(upload_to="usuarios/perfiles/", blank=True)
   es_verificado = models.BooleanField(default=False)
   tiene_pub_activa = models.BooleanField(default=False)
   rating = models.DecimalField(

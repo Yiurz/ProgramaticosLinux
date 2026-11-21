@@ -12,4 +12,5 @@
   {% csrf_token %}
   <button type="submit" class="secundario">Cerrar sesión</button>
 </form>
+<p class="pie"><a href="{% url 'usuarios:perfil' %}">Mi perfil</a></p>
 {% endblock %}
