@@ -20,7 +20,7 @@ MENSAJES_NOTIFICACION = {
     "ENTREGA_COMPLETADA": "La entrega ha sido completada."
 }
 
-def crear_notificacion(destinatario, tipo, evento_id, usuario_origen=None):
+def crear_notificacion(destinatario, tipo, evento_id, usuario_origen=None, detalle=None):
     "Crea una notificación para un usuario."
 
     mensaje = MENSAJES_NOTIFICACION.get(tipo)
@@ -34,6 +34,7 @@ def crear_notificacion(destinatario, tipo, evento_id, usuario_origen=None):
         evento_id=evento_id,
         defaults={
             "tipo": tipo,
+            "mensaje": f"{detalle}. {mensaje}" if detalle else mensaje,
             "usuario_origen": usuario_origen,
         }
     )

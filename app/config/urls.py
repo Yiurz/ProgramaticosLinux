@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path
+from foro.views import tablon
 from usuarios import views as usuariosUrl
 
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
     path('api/v1/calificaciones/', include('calificaciones.urls')),
     path('api/v1/notificaciones/', include('notificaciones.urls')),
 
+    path("foro/", tablon, name="tablon"),
     path("", usuariosUrl.inicio, name="inicio"),
     path("registro/", usuariosUrl.registro, name="registro"),
     path("login/", LoginView.as_view(template_name="usuarios/login.html"), name="login"),

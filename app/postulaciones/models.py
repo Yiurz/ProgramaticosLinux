@@ -43,6 +43,8 @@ class Postulacion(models.Model):
         DESCARTADA = "descartada", "Descartada"
         CANCELADA = "cancelada", "Cancelada"
 
+    ESTADOS_VIGENTES = (Estado.PENDIENTE, Estado.EN_ESPERA, Estado.ACEPTADA)
+
     publicacion = models.ForeignKey(
         Publicacion,
         on_delete=models.CASCADE,

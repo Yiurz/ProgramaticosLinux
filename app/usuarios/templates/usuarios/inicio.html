@@ -8,6 +8,7 @@
   <dt>Tipo de cuenta</dt>
   <dd>{{ user.get_tipo_usuario_display|capfirst }}</dd>
 </dl>
+<p><a href="{% url 'tablon' %}">{% if user.tipo_usuario == 'DISCAPACITADO' %}Mi publicación{% else %}Ver foro de entregas{% endif %}</a></p>
 <form method="post" action="{% url 'logout' %}">
   {% csrf_token %}
   <button type="submit" class="secundario">Cerrar sesión</button>

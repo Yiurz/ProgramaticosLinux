@@ -4,12 +4,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block titulo %}{% endblock %} · Campus USM</title>
-  <link rel="stylesheet" href="{% static 'usuarios/registro.css' %}">
+  <title>{% block titulo %}{% endblock %} · Sansa-delivery</title>
+  <link rel="stylesheet" href="{% static 'usuarios/sansa.css' %}">
+  {% block recursos %}{% endblock %}
 </head>
 <body class="{% block clase %}{% endblock %}">
-  <header><span>Universidad Técnica Federico Santa María</span></header>
-  <main>
+  <header class="cabecera">
+    <nav aria-label="Navegación principal">
+      <a class="marca" href="{% url 'inicio' %}">Sansa-delivery</a>
+      {% block navegacion %}{% endblock %}
+    </nav>
+  </header>
+  <main class="{% block panel %}cuenta{% endblock %}">
     {% block contenido %}{% endblock %}
   </main>
 </body>

@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
 from django.utils import timezone
 
+from notificaciones.services import crear_notificacion
 from postulaciones.models import Publicacion, Postulacion
 from .models import Pedido, SolicitudCancelacion
 
@@ -13,6 +14,8 @@ class GestorPedidos:
     @transaction.atomic
     def iniciar_pedido(postulacion_id, cliente):
 
+        if cliente.tipo_usuario != cliente.Tipos.DISCAPACITADO:
+            raise PermissionDenied
         postulacion = Postulacion.objects.get(
             pk=postulacion_id
         )
@@ -46,6 +49,8 @@ class GestorPedidos:
                 "La postulación no está disponible"
             )
 
+        if postulacion.repartidor.tipo_usuario != cliente.Tipos.REPARTIDOR:
+            raise ValidationError("Esta cuenta no puede realizar entregas")
         if cliente.pk == postulacion.repartidor_id:
             raise ValidationError(
                 "No puedes entregar tu propio pedido"
@@ -86,15 +91,19 @@ class GestorPedidos:
         postulacion.estado = Postulacion.Estado.ACEPTADA
         postulacion.save(update_fields=["estado"])
 
-        Postulacion.objects.filter(
+        restantes = Postulacion.objects.select_related("repartidor").filter(
             publicacion=publicacion,
             estado__in=[
                 Postulacion.Estado.PENDIENTE,
                 Postulacion.Estado.EN_ESPERA
             ]
-        ).exclude(pk=postulacion.pk).update(
-            estado=Postulacion.Estado.EN_ESPERA
-        )
+        ).exclude(pk=postulacion.pk)
+        for otra in restantes:
+            crear_notificacion(otra.repartidor, "POSTULACION_RECHAZADA", f"descartada-{otra.pk}",
+                               cliente, detalle=publicacion.titulo)
+        restantes.update(estado=Postulacion.Estado.DESCARTADA)
+        crear_notificacion(postulacion.repartidor, "REPARTIDOR_ELEGIDO", f"aceptada-{postulacion.pk}",
+                           cliente, detalle=publicacion.titulo)
 
         publicacion.estado = Publicacion.Estado.ASIGNADA
         publicacion.save(update_fields=["estado"])

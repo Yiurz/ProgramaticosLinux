@@ -1,11 +1,11 @@
 """Vistas de la API de postulaciones."""
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from django.views.decorators.http import require_POST
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError
 
-from .models import Publicacion, Postulacion
+from .services import ofrecer_ayuda
 
 
 @login_required
@@ -13,39 +13,9 @@ from .models import Publicacion, Postulacion
 def crear_postulacion(request, publicacion_id):
 
     try:
-        with transaction.atomic():
-            publicacion = get_object_or_404(
-                Publicacion.objects.select_for_update(),
-                pk=publicacion_id
-            )
-
-            if not publicacion.visible:
-                return JsonResponse(
-                    {"error": "La publicación no está abierta"},
-                    status=400
-                )
-
-            if publicacion.autor_id == request.user.pk:
-                return JsonResponse(
-                    {"error": "No puedes postular a tu publicación"},
-                    status=400
-                )
-
-            if Postulacion.objects.filter(
-                publicacion=publicacion,
-                repartidor=request.user,
-                estado__in=["pendiente", "en_espera", "aceptada"]
-            ).exists():
-                return JsonResponse(
-                    {"error": "Ya tienes una postulación vigente"},
-                    status=400
-                )
-
-            postulacion = Postulacion.objects.create(
-                publicacion=publicacion,
-                repartidor=request.user
-            )
-
+        postulacion = ofrecer_ayuda(publicacion_id, request.user)
+    except ValidationError as error:
+        return JsonResponse({"error": error.messages[0]}, status=400)
     except IntegrityError:
         return JsonResponse(
             {"error": "Ya existe una postulación vigente"},
