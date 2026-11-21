@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'foro.apps.ForoConfig',
     'postulaciones.apps.PostulacionesConfig',
-    'contacto.apps.ContactoConfig',
-    'cancelaciones.apps.CancelacionesConfig',
+    'cancelaciones.apps.PedidosConfig',
     'calificaciones.apps.CalificacionesConfig',
     'notificaciones.apps.NotificacionesConfig',
 ]
