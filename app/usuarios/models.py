@@ -23,10 +23,6 @@ class Usuario(AbstractUser):
     null=True,
     blank=True
   )
-  entregas_exitosas = models.PositiveIntegerField(
-    null=True,
-    blank=True
-  )
   entregas_totales = models.PositiveIntegerField(
     null=True,
     blank=True
