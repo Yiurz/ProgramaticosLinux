@@ -1,0 +1,33 @@
+.foro { width: min(64rem, calc(100% - 2rem)); margin: auto; padding-block: clamp(2rem, 6vw, 4.5rem); }
+.foro h1 { margin-bottom: 1.5rem; }
+h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 1rem; }
+h3 { margin: 1.75rem 0 .6rem; }
+.intro { margin: -.75rem 0 2rem; }
+.tablon { display: grid; align-items: start; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1.5rem; }
+.manta {
+  max-width: 44rem;
+  padding: clamp(.8rem, 2.3vw, 1.4rem);
+  border: 1px solid var(--borde-campo); border-radius: 1rem;
+  background-color: #fff;
+  background-image: var(--cuadros);
+  box-shadow: 0 .6rem 1rem -.55rem #264c3970;
+}
+.papel, .avisos { background: var(--superficie); border-radius: .6rem; padding: clamp(1rem, 3vw, 2rem); }
+.firma { font-size: .9rem; color: var(--texto-suave); margin: 0 0 .8rem; }
+.descripcion { white-space: pre-line; }
+.estado { display: inline-block; background: #e6efdf; border-radius: .4rem; padding: .35rem .7rem; font-size: .9rem; font-weight: 650; }
+.estado + h2 { margin-top: .8rem; }
+.candidatos, .avisos ul { list-style: none; padding: 0; margin: 0; }
+.candidatos li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; border-top: 1px solid var(--linea); padding-block: .75rem; }
+.candidatos p { margin: .15rem 0; }
+.publicar { display: grid; gap: 1rem; }
+textarea { resize: vertical; }
+details { position: relative; margin-left: auto; }
+summary { cursor: pointer; font-weight: 650; min-height: 2.75rem; padding: .55rem .75rem; border: 1px solid #95b09f; border-radius: .5rem; }
+#cantidad { background: #e1efcf; color: #193f32; padding: .05rem .4rem; border-radius: .4rem; }
+.avisos { position: absolute; right: 0; top: calc(100% + .5rem); width: min(23rem, calc(100vw - 2rem)); z-index: 2; color: var(--tinta); box-shadow: 0 .5rem 2rem #20392b35; border: 1px solid var(--borde-campo); }
+.avisos ul { max-height: 40vh; overflow-y: auto; }
+.avisos li { padding: .65rem 0; border-top: 1px solid var(--linea); overflow-wrap: anywhere; }
+.discreto { margin-top: .7rem; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.aviso, .vacio { border-left: .25rem solid #76944d; background: white; padding: .8rem 1rem; }

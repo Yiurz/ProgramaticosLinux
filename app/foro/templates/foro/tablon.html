@@ -1,0 +1,73 @@
+{% extends "usuarios/base.html" %}
+{% load static %}
+{% block titulo %}{% if es_autor %}Mi publicación{% elif pedido %}Mi entrega{% else %}Foro de entregas{% endif %}{% endblock %}
+{% block panel %}foro{% endblock %}
+{% block recursos %}
+  <link rel="stylesheet" href="{% static 'foro/picnic.css' %}">
+  <script src="{% static 'foro/bandeja.js' %}" defer></script>
+{% endblock %}
+{% block navegacion %}
+    <details id="bandeja" data-ultimo="{{ avisos.0.pk|default:'' }}" data-url="{% url 'listar_notificaciones' %}">
+      <summary>Bandeja <span id="cantidad">{{ sin_leer }}</span><span class="sr"> sin leer</span></summary>
+      <section class="avisos" aria-label="Notificaciones">
+        <h2>Notificaciones</h2>
+        <ul id="mensajes">
+          {% for aviso in avisos %}<li>{% if not aviso.leida %}<strong>Nuevo · </strong>{% endif %}{{ aviso.mensaje }}</li>
+          {% empty %}<li>Aún no tienes notificaciones.</li>{% endfor %}
+        </ul>
+        <form method="post" action="{% url 'foro:leer' %}">{% csrf_token %}<button class="discreto">Marcar como leídas</button></form>
+      </section>
+    </details>
+{% endblock %}
+{% block contenido %}
+  <h1>{% if es_autor %}Mi publicación{% elif pedido %}Mi entrega{% else %}Foro de entregas{% endif %}</h1>
+  {% for message in messages %}<p role="status" class="aviso">{{ message }}</p>{% endfor %}
+  <p id="actualizacion" class="aviso" hidden>Hay novedades. <a href="{% url 'tablon' %}">Actualizar mi vista</a></p>
+  {% if pedido %}
+    <article class="manta"><div class="papel">
+      <span class="estado">En reparto</span>
+      <h2>{{ pedido.publicacion.titulo }}</h2><p class="descripcion">{{ pedido.publicacion.descripcion }}</p>
+      {% if es_autor %}
+        <p>Repartidor asignado <strong>{{ pedido.repartidor.username }}</strong></p>
+      {% else %}
+        <p>Contacto de {{ pedido.cliente.username }} · <a href="tel:{{ pedido.cliente.celular }}">{{ pedido.cliente.celular }}</a></p>
+        <form method="post" action="{% url 'foro:entregar' pedido.pk %}">{% csrf_token %}<button>Marcar como entregado</button></form>
+      {% endif %}
+    </div></article>
+  {% elif es_autor %}
+    {% if propia %}
+      <article class="manta"><div class="papel">
+        <span class="estado">{{ propia.get_estado_display }}</span><h2>{{ propia.titulo }}</h2><p class="descripcion">{{ propia.descripcion }}</p>
+        <h3>Repartidores que se ofrecieron</h3>
+        <ul class="candidatos">
+        {% for oferta in candidatos %}
+          <li><div><strong>{{ oferta.repartidor.username }}</strong>
+            <p>{% if oferta.repartidor.rating != None %}{{ oferta.repartidor.rating }} / 5{% else %}Sin puntaje{% endif %} · Entregas completadas: {{ oferta.repartidor.entregas_totales|default_if_none:"0" }}</p></div>
+            <form method="post" action="{% url 'foro:elegir' oferta.pk %}">{% csrf_token %}<button aria-label="Elegir a {{ oferta.repartidor.username }}">Elegir</button></form>
+          </li>
+        {% empty %}<li>Aún no hay ofrecimientos.</li>{% endfor %}
+        </ul>
+      </div></article>
+    {% else %}
+      <section class="manta"><div class="papel">
+        <h2>Publicar un pedido</h2>
+        <form class="publicar" method="post" action="{% url 'foro:publicar' %}">{% csrf_token %}
+          {{ form.as_div }}
+          <button>Publicar pedido</button>
+        </form>
+      </div></section>
+    {% endif %}
+  {% else %}
+    <p class="intro">Elige un pedido del campus y ofrece tu ayuda.</p>
+    <div class="tablon">
+    {% for publicacion in publicaciones %}
+      <article class="manta"><div class="papel">
+        <p class="firma">{{ publicacion.autor.username }} · <time datetime="{{ publicacion.fecha_creacion|date:'c' }}">{{ publicacion.fecha_creacion|date:"d/m · H:i" }}</time></p>
+        <h2>{{ publicacion.titulo }}</h2><p class="descripcion">{{ publicacion.descripcion }}</p>
+        {% if publicacion.ofrecida %}<span class="estado">Esperando aprobación</span>
+        {% else %}<form method="post" action="{% url 'foro:ofrecer' publicacion.pk %}">{% csrf_token %}<button>Ofrecer ayuda</button></form>{% endif %}
+      </div></article>
+    {% empty %}<p class="vacio">Aún no hay pedidos abiertos.</p>{% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "usuarios/base.html" %}
+{% block titulo %}Mi perfil{% endblock %}
+{% block clase %}compacta{% endblock %}
+
+{% block contenido %}
+<h1>Mi perfil</h1>
+<dl class="resumen">
+  <dt>Nombre de usuario</dt>
+  <dd>{{ user.username }}</dd>
+  <dt>Tipo de cuenta</dt>
+  <dd>{{ user.get_tipo_usuario_display|capfirst }}</dd>
+</dl>
+{% if user.foto_perfil %}
+  <img class="foto-perfil" src="{{ user.foto_perfil.url }}" alt="Foto de perfil de {{ user.username }}">
+{% else %}
+  <p>Aún no tienes una foto de perfil.</p>
+{% endif %}
+{% for message in messages %}
+  <p role="status">{{ message }}</p>
+{% endfor %}
+<form method="post" enctype="multipart/form-data" class="acceso">
+  {% csrf_token %}
+  <div class="campos"><div>{{ form.foto_perfil.as_field_group }}</div></div>
+  <button type="submit">Guardar foto</button>
+</form>
+<p class="pie"><a href="{% url 'inicio' %}">Volver al inicio</a></p>
+{% endblock %}

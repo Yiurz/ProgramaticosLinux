@@ -1,0 +1,17 @@
+{% extends "usuarios/base.html" %}
+{% block titulo %}Inicio{% endblock %}
+{% block clase %}compacta{% endblock %}
+
+{% block contenido %}
+<h1>Hola, {{ user.get_full_name|default:user.username }}</h1>
+<dl class="resumen">
+  <dt>Tipo de cuenta</dt>
+  <dd>{{ user.get_tipo_usuario_display|capfirst }}</dd>
+</dl>
+<p><a href="{% url 'tablon' %}">{% if user.tipo_usuario == 'DISCAPACITADO' %}Mi publicación{% else %}Ver foro de entregas{% endif %}</a></p>
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit" class="secundario">Cerrar sesión</button>
+</form>
+<p class="pie"><a href="{% url 'usuarios:perfil' %}">Mi perfil</a></p>
+{% endblock %}
