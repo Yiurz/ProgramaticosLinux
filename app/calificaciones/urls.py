@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     path(
-        'calificar/<int:pedido_id>/',
+        "<int:pedido_id>/calificar/",
         views.calificar_entrega,
-        name='calificar_entrega'
+        name="calificar_entrega"
     ),
 ]

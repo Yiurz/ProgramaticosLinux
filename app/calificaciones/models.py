@@ -1,14 +1,16 @@
 from django.db import models
-from django.db.models import F
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import (
+    MinValueValidator,
+    MaxValueValidator
+)
 
 
 class Calificaciones(models.Model):
 
     pedido = models.OneToOneField(
-        'pedidos.Pedido',
-        on_delete=models.CASCADE,
-        related_name='calificacion'
+        "pedidos.Pedido",
+        on_delete=models.PROTECT,
+        related_name="calificacion"
     )
 
     nueva_calificacion = models.PositiveSmallIntegerField(
@@ -52,5 +54,4 @@ class Calificaciones(models.Model):
     def procesar_calificacion(self):
         self.actualizar_promedio()
         self.asignar_puntos()
-
         self.pedido.repartidor.save()
